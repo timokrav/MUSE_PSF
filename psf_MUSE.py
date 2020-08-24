@@ -188,6 +188,12 @@ frame1.plot(rad,component_1, color="blue", label="Component 1")
 frame1.plot(rad,component_2, color="green", label="Component 2")
 frame1.plot(rad,component_3, color="black", label="Component 3")
 frame1.plot(rad,model, color="red", label="model")
+
+# Sandin data points
+R_sandin     = [0.3,0.5,1.0,2.0,3.0,5.0,10.0,20.0,30.0]
+PSF_sandin_l1= 10**np.array([-0.55,-0.7,-1.2,-2.1,-3.0,-4.2,-5.25,-6.0,-6.5])
+PSF_sandin_h1= 10**np.array([-0.45,-0.6,-1.0,-1.75,-2.4,-3.5,-4.7,-5.5,-5.75])
+frame1.fill_between(R_sandin, PSF_sandin_l1,PSF_sandin_h1, color="magenta", alpha=0.2)
 frame1.legend();frame1.set_yscale("log");frame1.set_xscale("log")
 
 #Residual plot
