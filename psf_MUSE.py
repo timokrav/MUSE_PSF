@@ -138,6 +138,25 @@ if fit_function == "moffat1":
     component_1 = moffat1_fit(rad,popt[0],popt[1],popt[2])
     component_2 = np.zeros(len(rad))
     component_3 = np.zeros(len(rad))
+    
+    # Calculate FWHM and fractional energy
+    def integral_function(r):
+        return moffat1_fit(r,popt[0],popt[1],popt[2])
+    if std_cube1[0].header["HIERARCH ESO INS AO FOCU1 CONFIG"] == "WFM":
+        fwhm_moffat = 2*popt[1]*np.sqrt(pow(2,1/popt[1])-1)*0.2
+        core_flux = quad(integral_function, 0, fwhm_moffat*5)
+        total_flux = quad(integral_function, 0, 30)
+        fractional_energy = core_flux[0]/total_flux[0]
+    if std_cube1[0].header["HIERARCH ESO INS AO FOCU1 CONFIG"] == "NFM":
+        fwhm_moffat = 2*popt[1]*np.sqrt(pow(2,1/popt[1])-1)*0.025
+
+    # Save FITS table
+    parameters = np.array(['Alpha', 'Beta', 'FWHM', 'Fractional_Energy'])
+    values = np.array([popt[1], popt[2], fwhm_moffat, fractional_energy])
+    col1 = fits.Column(name='Parameter', format='10A', array=parameters)
+    col2 = fits.Column(name='Channel '+str(chan_cent), format='D', unit='DN', array=values)
+    hdu = fits.BinTableHDU.from_columns([col1, col2])
+    hdu.writeto(std_cube1[0].header["DATE-OBS"]+"."+fit_function+".psf.fits", overwrite=True)
 
 if fit_function == "moffat1_PL":
     print("Fitting 1 Moffat & power law to the PSF profile")
