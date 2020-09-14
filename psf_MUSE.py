@@ -143,7 +143,7 @@ if fit_function == "moffat1":
     def integral_function(r):
         return moffat1_fit(r,popt[0],popt[1],popt[2])
     if std_cube1[0].header["HIERARCH ESO INS AO FOCU1 CONFIG"] == "WFM":
-        fwhm_moffat = 2*popt[1]*np.sqrt(pow(2,1/popt[1])-1)*0.2
+        fwhm_moffat = 2*popt[1]*np.sqrt(pow(2,1/popt[2])-1)*0.2
         core_flux = quad(integral_function, 0, fwhm_moffat*5)
         total_flux = quad(integral_function, 0, 30)
         fractional_energy = core_flux[0]/total_flux[0]
