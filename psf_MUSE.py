@@ -156,7 +156,7 @@ if fit_function == "moffat1":
     col1 = fits.Column(name='Parameter', format='10A', array=parameters)
     col2 = fits.Column(name='Channel '+str(chan_cent), format='D', unit='DN', array=values)
     hdu = fits.BinTableHDU.from_columns([col1, col2])
-    hdu.writeto(std_cube1[0].header["DATE-OBS"]+"."+fit_function+".psf.fits", overwrite=True)
+    hdu.writeto(std_cube1[0].header["DATE-OBS"]+"."+obs_mode+"."+fit_function+".psf.fits", overwrite=True)
 
 if fit_function == "moffat1_PL":
     print("Fitting 1 Moffat & power law to the PSF profile")
